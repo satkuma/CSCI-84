@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?><Task schemaVersion="5.0">
+   <Registration>
+      <Name>N-Way ANOVA</Name>
+      <Description>The N-Way ANOVA task tests and provides graphs for effects of one or more factors on the means of a single continuous dependent variable.</Description>
+      <GUID>91d6d212-f038-422b-a529-58d4a482265c</GUID>
+      <Procedures>GLM</Procedures>
+      <Version>3.5</Version>
+      <Links>
+         <Link href="http://support.sas.com/documentation/onlinedoc/sasstudio/index.html">SAS Studio User's Guide</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/documentation/cdl/en/statug/68162/HTML/default/viewer.htm#statug_glm_overview.htm">The GLM Procedure</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/training/studio">SAS Tutorials</Link>
+      </Links>
+   </Registration>
+   
+   <Metadata>  
+      <DataSources>
+         <DataSource name="dataset" where="true">
+            <Roles>
+               <Role exclude="classVariables" maxVars="1" minVars="1" name="dependentVariable" type="N">Dependent variable:</Role>
+               <Role exclude="dependentVariable" minVars="2" name="classVariables" type="A">Factors:</Role>
+
+            </Roles>
+         </DataSource>  
+      </DataSources>
+      
+      <Options>
+         <Option inputType="string" name="dataTab">DATA</Option>
+         <Option inputType="string" name="dataGroup">DATA</Option>
+         <Option inputType="string" name="rolesGroup">ROLES</Option>
+         <Option inputType="string" name="modelTab">MODEL</Option>
+         <Option inputType="string" name="modelGroup">MODEL EFFECTS</Option>
+         <Option excludeTools="TWOFACT,THREEFACT,POLYEFFECT,POLYMODEL,NFACTPOLY" inputType="mixedeffects" name="modelBuilder" required="true" roleClassification="classVariables" width="100%">Model</Option> 
+         <Option inputType="string" name="optionsTab">OPTIONS</Option>
+         <Option inputType="string" name="statsGroup">STATISTICS</Option>
+         <Option defaultValue="defaultChoice" inputType="combobox" name="statsChoice">Select statistics to display:</Option>
+         <Option inputType="string" name="defaultChoice">Default statistics</Option>
+         <Option inputType="string" name="customChoice">Default and additional statistics</Option>      
+         <Option defaultValue="1" inputType="checkbox" name="multCompare">Perform multiple comparisons</Option>
+         <Option indent="1" inputType="select" multiple="true" name="multCompareList" required="true" sourceLink="modelBuilder" sourceType="filterClassification">Select effects to test:</Option>         
+         <Option defaultValue="tukeyChoice" indent="1" inputType="combobox" name="multCompareCombo">Method:</Option>
+         <Option defaultValue="mainEffects" indent="1" inputType="combobox" name="effectCombo">Which effects:</Option>
+         <Option inputType="string" name="mainEffects">Main effects</Option>
+         <Option inputType="string" name="allEffects">All effects</Option>
+         <Option inputType="string" name="selectEffects">Selected effects</Option>
+         <Option inputType="string" name="bonferroniChoice">Bonferroni</Option>
+         <Option inputType="string" name="dunnettChoice">Dunnett</Option>
+         <Option inputType="string" name="nelsonChoice">Nelson</Option>
+         <Option inputType="string" name="scheffeChoice">Scheffe</Option>
+         <Option inputType="string" name="sidakChoice">Sidak</Option>
+         <Option inputType="string" name="tukeyChoice">Tukey</Option>		
+         <Option defaultValue="alpha_05" indent="1" inputType="combobox" name="alpha">Significance level:</Option>
+         <Option inputType="string" name="alpha_10">0.10</Option>
+         <Option inputType="string" name="alpha_05">0.05</Option>
+         <Option inputType="string" name="alpha_01">0.01</Option>
+         <Option inputType="string" name="specifyAlpha">Specify value</Option>
+         <Option indent="2" inputType="numbertext" invalidMessage="Enter a number greater than zero and less than 1 for the significance level" maxValue="0.99999999999" minValue="0.00000000001" missingMessage="Enter a number greater than zero and less than 1 for the significance level" name="alphaValue" promptMessage="Enter a number greater than zero and less than 1 for the significance level" rangeMessage="Enter a number greater than zero and less than 1 for the significance level" required="true" width="100px">Custom significance level:</Option>
+         <Option inputType="string" name="ssGroup">Sums of Squares</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="ss1">Sequential sum of squares (Type 1)</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="ss3">Adjusted sum of squares (Type 3)</Option>
+         <Option inputType="string" name="plotsGroup">PLOTS</Option>
+         <Option defaultValue="defaultPlots" inputType="combobox" name="plotsChoice">Select plots to display:</Option>
+         <Option inputType="string" name="defaultPlots">Default plots</Option>
+         <Option inputType="string" name="customPlots">Selected plots</Option>
+         <Option inputType="string" name="noPlots">Suppress plots</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="diffPlot">Mean difference plot</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="boxPlot">Box plot</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="interactionPlot">Interaction plot</Option> 
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="anomPlot">Analysis of means plot</Option>
+         <Option defaultValue="1" indent="1" inputType="checkbox" name="lsmeansPlot">LSMeans plot</Option>
+         <Option indent="1" inputType="checkbox" name="diagPlot">Diagnostic plots</Option>
+         <Option default="panelChoice" indent="2" inputType="combobox" name="unpackCombo">Display as:</Option>
+         <Option inputType="string" name="panelChoice">Panel of plots</Option>
+         <Option inputType="string" name="unpackChoice">Individual plots</Option>         
+			<Option defaultValue="maxpointsDefault" inputType="combobox" name="maxpointsCombo">Maximum number of plot points:</Option>
+			<Option inputType="string" name="maxpointsDefault">Default(5,000)</Option>
+			<Option inputType="string" name="maxpoints10000">10,000</Option>
+			<Option inputType="string" name="maxpointsSpecify">Use custom value</Option>
+			<Option inputType="string" name="maxpointsNoLimit">No limit</Option>
+			<Option decimalPlaces="0" indent="1" inputType="numbertext" invalidMessage="Enter an integer number greater than zero for the maximum number of plot points" minValue="1" missingMessage="Enter an integer number greater than zero for the maximum number of plot points" name="maxpointsValue" promptMessage="Enter an integer number greater than zero for the maximum number of plot points" rangeMessage="Enter an integer number greater than zero for the maximum number of plot points" required="true">Custom maximum number of points:</Option>         
+         
+         <Option inputType="string" name="outputTab">OUTPUT</Option>
+         <Option inputType="string" name="outputGroup">OUTPUT DATA SET</Option>
+         <Option defaultValue="0" inputType="checkbox" name="createOutput">Create output data set</Option>
+         <Option defaultValue="Nwayanova_stats" indent="1" inputType="outputdata" name="outputDS" required="true">Data set name:</Option>
+         <Option indent="1" inputType="string" name="predictedList">Predicted Values</Option>
+         <Option defaultValue="1" inputType="checkbox" name="predicted">Predicted value</Option>
+         <Option inputType="checkbox" name="lcl">Prediction limits for individual value</Option>   
+         <Option inputType="checkbox" name="lclm">Confidence limits for mean predicted value</Option>
+         <Option defaultValue="alpha_05" indent="1" inputType="combobox" name="outalpha">Significance level:</Option>
+         <Option indent="2" inputType="numbertext" invalidMessage="Enter a number greater than zero and less than 1 for the significance level" maxValue="0.99999999999" minValue="0.00000000001" missingMessage="Enter a number greater than zero and less than 1 for the significance level" name="outalphaValue" promptMessage="Enter a number greater than zero and less than 1 for the significance level" rangeMessage="Enter a number greater than zero and less than 1 for the significance level" required="true" width="100px">Custom significance level:</Option>          
+         <Option indent="1" inputType="string" name="residualList">Residuals</Option>
+         <Option inputType="checkbox" name="residual">Residual</Option>
+         <Option inputType="checkbox" name="student">Studentized residual</Option>
+         <Option inputType="checkbox" name="rstudent">Studentized residual with current observation removed</Option>
+         <Option indent="1" inputType="string" name="stdList">Standard Errors</Option>
+         <Option inputType="checkbox" name="stdr">Standard error of residual</Option>
+         <Option inputType="checkbox" name="stdp">Standard error of mean predicted value</Option>
+         <Option inputType="checkbox" name="stdi">Standard error of individual predicted value</Option> 
+         <Option indent="1" inputType="string" name="influenceList">Influence Statistics</Option>
+         <Option inputType="checkbox" name="cookd">Cook's D influence</Option>
+         <Option inputType="checkbox" name="covratio">Covratio</Option>
+         <Option inputType="checkbox" name="dffits">Dffits</Option>
+         <Option inputType="checkbox" name="h">Leverage</Option>            
+      </Options>
+      
+   </Metadata> 
+   <UI>
+      <Container option="dataTab">
+      
+         <Group open="true" option="dataGroup">
+            <DataItem data="dataset"/>
+         </Group>
+         
+         <Group open="true" option="rolesGroup">
+            <RoleItem role="dependentVariable"/>
+            <RoleItem role="classVariables"/>
+         </Group>  
+         
+      </Container>
+      
+      <Container option="modelTab">
+         <Group open="true" option="modelGroup">
+            <OptionItem option="modelBuilder"/>
+         </Group>
+      </Container>
+      
+      <Container option="optionsTab">
+         <Group open="true" option="statsGroup">
+            <OptionChoice option="statsChoice">
+               <OptionItem option="defaultChoice"/>
+					<OptionItem option="customChoice"/>
+            </OptionChoice>
+
+            <OptionItem option="multCompare"/>
+            <OptionChoice option="effectCombo">
+               <OptionItem option="mainEffects"/>
+               <OptionItem option="allEffects"/>
+               <OptionItem option="selectEffects"/>
+            </OptionChoice>
+            <OptionChoice option="multCompareList"/>
+            <OptionChoice option="multCompareCombo">
+               <OptionItem option="bonferroniChoice"/>
+               <OptionItem option="nelsonChoice"/>
+               <OptionItem option="scheffeChoice"/>
+               <OptionItem option="sidakChoice"/>
+               <OptionItem option="tukeyChoice"/>
+            </OptionChoice>
+            <OptionChoice option="alpha">
+               <OptionItem option="alpha_10"/>
+               <OptionItem option="alpha_05"/>
+               <OptionItem option="alpha_01"/>
+               <OptionItem option="specifyAlpha"/>
+            </OptionChoice>
+            <OptionItem option="alphaValue"/>
+            <OptionItem option="ssGroup"/>
+            <OptionItem option="ss1"/>
+            <OptionItem option="ss3"/>
+         </Group>
+            
+         <Group open="false" option="plotsGroup">
+            <OptionChoice option="plotsChoice">
+               <OptionItem option="defaultPlots"/>
+               <OptionItem option="customPlots"/>
+               <OptionItem option="noPlots"/>
+            </OptionChoice>
+            <OptionItem option="boxPlot"/>
+            <OptionItem option="interactionPlot"/>
+            <OptionItem option="lsmeansPlot"/>
+            <OptionItem option="diffPlot"/>
+            <OptionItem option="anomPlot"/>
+            <OptionItem option="diagPlot"/>
+            <OptionChoice option="unpackCombo">
+               <OptionItem option="panelChoice"/>
+               <OptionItem option="unpackChoice"/>
+            </OptionChoice>
+				<OptionChoice option="maxpointsCombo">
+					<OptionItem option="maxpointsDefault"/>
+					<OptionItem option="maxpoints10000"/>
+					<OptionItem option="maxpointsSpecify"/>
+					<OptionItem option="maxpointsNoLimit"/>
+				</OptionChoice>
+				<OptionItem option="maxpointsValue"/>               
+        
+         </Group>        
+      </Container>
+      
+      <Container option="outputTab">
+         <Group open="true" option="outputGroup">
+            <OptionItem option="createOutput"/>
+            <OptionItem option="outputDS"/>
+            <Group open="true" option="predictedList">
+               <OptionItem option="predicted"/>
+               <OptionItem option="lcl"/>
+               <OptionItem option="lclm"/>
+               <OptionChoice option="outalpha">
+                  <OptionItem option="alpha_10"/>
+                  <OptionItem option="alpha_05"/>
+                  <OptionItem option="alpha_01"/>
+                  <OptionItem option="specifyAlpha"/>
+               </OptionChoice>
+               <OptionItem option="outalphaValue"/>                 
+            </Group>
+            <Group option="residualList">
+               <OptionItem option="residual"/>
+               <OptionItem option="student"/>
+               <OptionItem option="rstudent"/>
+            </Group>
+            <Group option="stdList">
+               <OptionItem option="stdr"/>
+               <OptionItem option="stdi"/>
+               <OptionItem option="stdp"/>
+            </Group>
+            <Group option="influenceList">
+               <OptionItem option="cookd"/>
+               <OptionItem option="covratio"/>
+               <OptionItem option="dffits"/>
+               <OptionItem option="h"/>
+            </Group>
+         </Group>
+      </Container>       
+   </UI>
+   
+   <Dependencies>
+
+      <Dependency condition="($statsChoice == 'customChoice')">
+         <Target action="show" conditionResult="true" option="multCompare"/>
+         <Target action="hide" conditionResult="false" option="multCompare"/> 
+         <Target action="show" conditionResult="true" option="ssGroup"/>
+         <Target action="hide" conditionResult="false" option="ssGroup"/>
+         <Target action="show" conditionResult="true" option="ss1"/>
+         <Target action="hide" conditionResult="false" option="ss1"/>
+         <Target action="show" conditionResult="true" option="ss3"/>
+         <Target action="hide" conditionResult="false" option="ss3"/>         
+      </Dependency>  
+      
+      <Dependency condition="($multCompare == '1')">
+         <Target action="show" conditionResult="true" option="effectCombo"/>
+         <Target action="hide" conditionResult="false" option="effectCombo"/>
+         <Target action="show" conditionResult="true" option="multCompareList"/>
+         <Target action="hide" conditionResult="false" option="multCompareList"/>         
+         <Target action="show" conditionResult="true" option="multCompareCombo"/>
+         <Target action="hide" conditionResult="false" option="multCompareCombo"/>
+         <Target action="show" conditionResult="true" option="alpha"/>
+         <Target action="hide" conditionResult="false" option="alpha"/>
+      </Dependency>    
+      
+      <Dependency condition="($multCompare  == '1' &amp;&amp; $effectCombo == 'selectEffects')">
+         <Target action="show" conditionResult="true" option="multCompareList"/>
+         <Target action="hide" conditionResult="false" option="multCompareList"/>
+      </Dependency>
+      
+      <Dependency condition="($alpha == 'specifyAlpha')">
+			<Target action="show" conditionResult="true" option="alphaValue"/>
+			<Target action="hide" conditionResult="false" option="alphaValue"/>
+      </Dependency>
+      
+       <Dependency condition="($plotsChoice == 'defaultPlots' || $plotsChoice == 'noPlots')">
+         <Target action="hide" conditionResult="true" option="lsmeansPlot"/>   
+         <Target action="hide" conditionResult="true" option="diffPlot"/>
+         <Target action="hide" conditionResult="true" option="anomPlot"/>
+         <Target action="hide" conditionResult="true" option="diagPlot"/>
+         <Target action="show" conditionResult="false" option="diagPlot"/>
+		</Dependency>
+      
+      <Dependency condition="(!($multCompare == '1'))">
+         <Target action="hide" conditionResult="true" option="lsmeansPlot"/>
+         <Target action="hide" conditionResult="true" option="diffPlot"/>
+         <Target action="hide" conditionResult="true" option="anomPlot"/>
+      </Dependency>      
+      
+      <Dependency condition="($statsChoice == 'customChoice' &amp;&amp; $plotsChoice == 'customPlots' &amp;&amp; ($multCompareCombo == 'bonferroniChoice' || $multCompareCombo == 'scheffeChoice' || $multCompareCombo == 'sidakChoice' || $multCompareCombo == 'tukeyChoice') ) ">
+         <Target action="show" conditionResult="true" option="lsmeansPlot"/>
+         <Target action="show" conditionResult="true" option="diffPlot"/>
+         <Target action="hide" conditionResult="true" option="anomPlot"/>
+         <Target action="show" conditionResult="true" option="diagPlot"/>
+      </Dependency>
+      
+      <Dependency condition="($statsChoice == 'customChoice' &amp;&amp; $plotsChoice == 'customPlots' &amp;&amp; ($multCompareCombo == 'nelsonChoice')  ) ">
+         <Target action="show" conditionResult="true" option="lsmeansPlot"/>
+         <Target action="show" conditionResult="true" option="anomPlot"/>
+         <Target action="hide" conditionResult="true" option="diffPlot"/>
+         <Target action="show" conditionResult="true" option="diagPlot"/>
+      </Dependency>
+      
+      <Dependency condition="($statsChoice == 'defaultChoice' &amp;&amp; $plotsChoice=='customPlots')">
+         <Target action="show" conditionResult="true" option="lsmeansPlot"/>
+         <Target action="show" conditionResult="true" option="diffPlot"/>
+         <Target action="show" conditionResult="true" option="diagPlot"/>      
+      </Dependency>
+      
+      <Dependency condition="($diagPlot == '1')">
+         <Target action="show" conditionResult="true" option="unpackCombo"/>
+         <Target action="hide" conditionResult="false" option="unpackCombo"/>
+      </Dependency>
+
+		<Dependency condition="($maxpointsCombo=='maxpointsSpecify')">
+			<Target action="show" conditionResult="true" option="maxpointsValue"/>
+			<Target action="hide" conditionResult="false" option="maxpointsValue"/>
+		</Dependency>      
+
+      <Dependency condition="($createOutput == '1')">
+         <Target action="enable" conditionResult="true" option="outputDS"/>
+         <Target action="disable" conditionResult="false" option="outputDS"/>
+         <Target action="show" conditionResult="true" option="predictedList"/>
+         <Target action="hide" conditionResult="false" option="predictedList"/>
+         <Target action="show" conditionResult="true" option="predicted"/>
+         <Target action="hide" conditionResult="false" option="predicted"/> 
+         <Target action="show" conditionResult="true" option="lclm"/>
+         <Target action="hide" conditionResult="false" option="lclm"/> 
+         <Target action="show" conditionResult="true" option="lcl"/>
+         <Target action="hide" conditionResult="false" option="lcl"/>         
+         <Target action="show" conditionResult="true" option="residualList"/>
+         <Target action="hide" conditionResult="false" option="residualList"/>
+         <Target action="show" conditionResult="true" option="residual"/>
+         <Target action="hide" conditionResult="false" option="residual"/>         
+         <Target action="show" conditionResult="true" option="student"/>
+         <Target action="hide" conditionResult="false" option="student"/>           
+         <Target action="show" conditionResult="true" option="rstudent"/>
+         <Target action="hide" conditionResult="false" option="rstudent"/>
+         <Target action="show" conditionResult="true" option="stdList"/>
+         <Target action="hide" conditionResult="false" option="stdList"/>
+         <Target action="show" conditionResult="true" option="stdr"/>
+         <Target action="hide" conditionResult="false" option="stdr"/>          
+         <Target action="show" conditionResult="true" option="stdi"/>
+         <Target action="hide" conditionResult="false" option="stdi"/>   
+         <Target action="show" conditionResult="true" option="stdp"/>
+         <Target action="hide" conditionResult="false" option="stdp"/>
+         <Target action="show" conditionResult="true" option="influenceList"/>
+         <Target action="hide" conditionResult="false" option="influenceList"/>         
+         <Target action="show" conditionResult="true" option="cookd"/>
+         <Target action="hide" conditionResult="false" option="cookd"/>
+         <Target action="show" conditionResult="true" option="covratio"/>
+         <Target action="hide" conditionResult="false" option="covratio"/>
+         <Target action="show" conditionResult="true" option="dffits"/>
+         <Target action="hide" conditionResult="false" option="dffits"/>
+         <Target action="show" conditionResult="true" option="h"/>
+         <Target action="hide" conditionResult="false" option="h"/>            
+      </Dependency>
+
+      <Dependency condition="($lcl == '1' || $lclm == '1')">
+         <Target action="show" conditionResult="true" option="outalpha"/>
+         <Target action="hide" conditionResult="false" option="outalpha"/>
+      </Dependency>
+      
+      <Dependency condition="($outalpha == 'specifyAlpha')">
+			<Target action="show" conditionResult="true" option="outalphaValue"/>
+			<Target action="hide" conditionResult="false" option="outalphaValue"/>
+		</Dependency> 
+
+      <Dependency condition="(($plotsChoice == 'customPlots') &amp;&amp; ($modelBuilder.size() == '1') &amp;&amp; ($modelBuilder.get(0).get(0) == 'm'))">
+         <Target action="show" conditionResult="true" option="boxPlot"/>
+         <Target action="hide" conditionResult="false" option="boxPlot"/>
+      </Dependency>
+                
+      <Dependency condition="(($plotsChoice == 'customPlots') &amp;&amp;       (          ($modelBuilder.mixedEffectsModels.get(0).modelEffects.size() == '1' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).effectType == 'interaction' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).memberSet1.size() == '2') ||          ($modelBuilder.mixedEffectsModels.get(0).modelEffects.size() == '2' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).effectType == 'main' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(1).effectType == 'main') ||          ($modelBuilder.mixedEffectsModels.get(0).modelEffects.size() == '3' &amp;&amp;(             ($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).effectType == 'main' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(1).effectType == 'main' &amp;&amp; !($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(2).effectType == 'main')) ||             ($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).effectType == 'main' &amp;&amp; $modelBuilder.mixedEffectsModels.get(0).modelEffects.get(2).effectType == 'main' &amp;&amp; !($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(1).effectType == 'main')) ||             ($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(1).effectType == 'main' &amp;&amp; $modelBuilder.mixedEffectsModels.get(2).modelEffects.get(1).effectType == 'main' &amp;&amp; !($modelBuilder.mixedEffectsModels.get(0).modelEffects.get(0).effectType == 'main'))                                   )          )        ))"> 
+      
+         <Target action="show" conditionResult="true" option="interactionPlot"/>
+         <Target action="hide" conditionResult="false" option="interactionPlot"/>     
+      </Dependency>
+     
+   </Dependencies>
+
+ 
+   <Requirements>
+      <Requirement condition="($modelBuilder.size() &gt; 0)">
+         <Message nlsKey="modelEffectsNeededRequirementKey">Add one or more effects to the model on the MODEL tab.</Message>
+		</Requirement>
+      
+		<Requirement condition="(!($createOutput=='1') ||(($createOutput=='1') &amp;&amp;          ($predicted == '1' ||          $lcl == '1' ||          $lclm== '1' ||          $residual  == '1' ||          $student   == '1' ||          $rstudent  == '1' ||          $stdr      == '1' ||          $stdi      == '1' ||          $stdp      == '1' ||          $cookd     == '1' ||          $covratio  == '1' ||          $dffits    == '1' ||          $h         == '1')))">
+				<Message nlsKey="outputRequirementKey">Select at least one statistic to include in the output data set.</Message>
+		</Requirement>   
+   </Requirements>
+ 
+   <CodeTemplate>   
+      <![CDATA[ 
+     
+#macro( GenerateEffect  $modelEffect )
+## if the effectType is 'nested', then this is a nested effect
+   #if ( $modelEffect.effectType == 'nested' )
+       #foreach( $subitem1 in $modelEffect.memberSet1 )$CTMUtil.toSASName($subitem1)#if($velocityCount < $modelEffect.memberSet1.size())*#end#end(#foreach($subitem2 in $modelEffect.memberSet2)$CTMUtil.toSASName($subitem2)#if($velocityCount < $modelEffect.memberSet2.size())*#end#end)
+## handle 'main' or 'interaction' effects
+   #else
+       #foreach( $subitem in $modelEffect.memberSet1 )$CTMUtil.toSASName($subitem)#if($velocityCount < $modelEffect.memberSet1.size())*#end#end
+   #end
+#end   
+ods noproctitle;
+ods graphics / imagemap=on;
+
+proc glm data=$dataset
+#if ($plotsChoice == 'noPlots')
+plots=none
+#end
+
+#if ($plotsChoice == 'defaultPlots' && !($maxpointsCombo == 'maxpointsDefault'))
+plots(maxpoints=
+#if ($maxpointsCombo == 'maxpoints10000')10000
+#elseif ($maxpointsCombo == 'maxpointsNoLimit')none
+#elseif ($maxpointsCombo == 'maxpointsSpecify')$maxpointsValue
+#end
+)
+#end
+
+#if ($plotsChoice == 'customPlots' && ($interactionPlot ==1 || $diagPlot == 1))
+plot(only 
+#if($maxpointsCombo && !($maxpointsCombo == 'maxpointsDefault')) maxpoints=
+#if ($maxpointsCombo == 'maxpoints10000')10000
+#elseif ($maxpointsCombo == 'maxpointsNoLimit')none
+#elseif ($maxpointsCombo == 'maxpointsSpecify')$maxpointsValue
+#end
+#end
+)=(
+#if ($diagPlot == 1) diagnostics#if ($unpackCombo == 'unpackChoice')(unpack)#end #end 
+#if ($boxPlot == 1) boxplot #end
+#if ($interactionPlot == 1) intplot #end
+)
+#end
+;
+#if($dataset.getWhereClause() != '') where $dataset.getWhereClause(); #end
+   class 
+   #foreach($item in $classVariables) $item #end
+   ;
+   model #foreach($item in $dependentVariable) $item #end =
+#if ( $modelBuilder.mixedEffectsModels )
+   #foreach( $model in $modelBuilder.mixedEffectsModels )
+      #if ($model.emtype=='FIXED')
+         #if ( $model.modelEffects.size() > 0 )
+             #foreach( $modelEffect in $model.modelEffects )
+                #GenerateEffect( $modelEffect )
+             #end
+         #end           
+         /
+         #if ($model.intercept == "False" ) noint#end
+      #end
+
+   #end    ## end #foreach( $model in $modelBuilder.mixedEffectsModels )
+#end
+
+
+#if ($statsChoice == 'defaultChoice') ss1 ss3 #end
+#if ($ss1 == 1) ss1 #end
+#if ($ss3 == 1) ss3 #end  
+   ;
+## LSMEANS
+   #if($multCompare == 1 || $statsChoice == 'defaultChoice')
+
+   lsmeans
+      #if ($statsChoice == "defaultChoice" || $effectCombo == 'mainEffects')
+         #foreach ($item in $modelBuilder.mixedEffectsModels.get(0).modelEffects) 
+            #if ($item.effectType == 'main')
+              $item.effectName
+            #end
+         #end
+         /
+      #end
+      
+      #if ($multCompare == '1' && $effectCombo == 'allEffects')
+#if ( $modelBuilder.mixedEffectsModels )
+   #foreach( $model in $modelBuilder.mixedEffectsModels )
+      #if ($model.emtype=='FIXED')
+         #if ( $model.modelEffects.size() > 0 )
+             #foreach( $modelEffect in $model.modelEffects )
+                #GenerateEffect( $modelEffect )
+             #end
+         #end           
+         /
+      #end
+
+   #end    ## end #foreach( $model in $modelBuilder.mixedEffectsModels )
+#end
+
+      #end
+
+      
+      #if ($multCompareList.size() > 0)
+         #foreach($item in $multCompareList) #GenerateEffect( $item) #end
+         /
+      #end 
+      adjust =     
+      #if ($multCompareCombo == 'bonferroniChoice') bon pdiff=all
+         #elseif ($multCompareCombo == 'nelsonChoice') nelson
+         #elseif ($multCompareCombo == 'scheffeChoice') scheffe pdiff=all
+         #elseif ($multCompareCombo == 'sidakChoice') sidak pdiff=all
+         #elseif ($multCompareCombo == 'tukeyChoice') tukey pdiff=all
+      #end
+   
+      #if (!($multCompareCombo)) tukey pdiff=all #end
+   
+   
+      #if     ($alpha == "alpha_05") #set( $mcAlpha = 0.05 ) 
+         #elseif ($alpha == "alpha_01") #set( $mcAlpha = 0.01 ) 
+         #elseif ($alpha == "alpha_10") #set( $mcAlpha = 0.10 ) 
+         #elseif ($alpha == 'specifyAlpha') #set( $mcAlpha = $alphaValue )  
+      #end 
+      #if (!($mcAlpha)) #set ($mcAlpha = 0.05) #end
+ alpha=$mcAlpha cl
+
+#if ($plotsChoice == "customPlots")
+plots = ( 
+#if ($lsmeansPlot == '1') meanplot(cl) #end
+#if ($diffPlot == '1') diffplot #end
+#if ($anomPlot == '1') anomplot #end
+)
+#end 
+;
+#end
+   
+   #if ($createOutput == 1)
+output out=$outputDS
+#if ($predicted=='1') p=predicted #end
+#if ($lcl=='1') lcl=lcl ucl=ucl#end
+#if ($lclm=='1') lclm=lclm uclm=uclm #end
+#if ($residual=='1') r=residual #end
+#if ($student=='1') student=student #end
+#if ($rstudent=='1') rstudent=rstudent #end
+#if ($stdr=='1') stdr=stdr #end
+#if ($stdi=='1') stdi=stdi #end
+#if ($stdp=='1') stdp=stdp #end
+#if ($cookd=='1') cookd=cookd #end
+#if ($covratio=='1') covratio=covratio #end
+#if ($dffits=='1') dffits=dffits #end
+#if ($h=='1') h=leverage #end
+#if ($outalpha)
+   #if     ($outalpha == "alpha_05") #set( $dsAlpha = 0.05 ) 
+   #elseif ($outalpha == "alpha_01") #set( $dsAlpha = 0.01 ) 
+   #elseif ($outalpha == "alpha_10") #set( $dsAlpha = 0.10 ) 
+   #elseif ($outalpha == 'specifyAlpha') #set( $dsAlpha = $outalphaValue )  
+   #end
+ / alpha=$dsAlpha   
+#end
+;
+#end   
+quit;
+
+      ]]>   
+   </CodeTemplate>   
+ 
+
+
+
+
+<TemplateValues version="3.5">
+<![CDATA[
+{"unpackChoice":"Individual plots","statsChoice":"customChoice","dffits":"","rolesGroup":"ROLES","alpha_01":"0.01","maxpointsSpecify":"Use custom value","tukeyChoice":"Tukey","alpha_05":"0.05","lclm":"","maxpointsValue":"","selectEffects":"Selected effects","outputTab":"OUTPUT","mainEffects":"Main effects","rstudent":"","stdList":"Standard Errors","lcl":"","customChoice":"Default and additional statistics","stdi":"","student":"","dunnettChoice":"Dunnett","stdp":"","noPlots":"Suppress plots","nelsonChoice":"Nelson","stdr":"","multCompareCombo":"tukeyChoice","scheffeChoice":"Scheffe","sasVersion":"9.43","alpha_10":"0.10","defaultPlots":"Default plots","defaultChoice":"Default statistics","dataTab":"DATA","optionsTab":"OPTIONS","influenceList":"Influence Statistics","residual":"","effectCombo":"selectEffects","sidakChoice":"Sidak","maxpoints10000":"10,000","plotsGroup":"PLOTS","maxpointsNoLimit":"No limit","classVariables":"json:[{\"value\":\"Year\",\"type\":\"Numeric\",\"length\":8,\"format\":\"\",\"informat\":\"\",\"className\":\"RoleObject\"},{\"value\":\"South_Dakota_Counties\",\"type\":\"Char\",\"length\":8,\"format\":\"\",\"informat\":\"\",\"className\":\"RoleObject\"}]","multCompare":"1","predictedList":"Predicted Values","ssGroup":"Sums of Squares","outalphaValue":"","multCompareList":"[{\"effectType\":\"main\",\"effectName\":\"Year\",\"memberSet1\":[\"Year\"],\"memberSet2\":[]}]","dependentVariable":"json:[{\"value\":\"dem_percent\",\"type\":\"Numeric\",\"length\":8,\"format\":\"\",\"informat\":\"\",\"className\":\"RoleObject\"}]","boxPlot":"1","outalpha":"alpha_05","bonferroniChoice":"Bonferroni","diffPlot":"1","residualList":"Residuals","outputGroup":"OUTPUT DATA SET","modelBuilder":{"modelSummaryValues":{"randomEffectsSetCount":0,"repeatedEffectsSetCount":0,"fixedEffectsCount":2,"fixedContinuousMainEffectsCount":0,"fixedClassificationMainEffectsCount":1,"fixedInterceptValue":"True","fixedModelsetInvalidStateCount":0,"randomModelsetInvalidStateCount":0,"repeatedModelsetInvalidStateCount":0,"meansModelsetInvalidStateCount":0,"zeroInflatedModelsetInvalidStateCount":0},"mixedEffectsModels":[{"emtype":"FIXED","intercept":"True","modelEffects":[{"effectType":"interaction","effectName":"Year*South_Dakota_Counties","memberSet1":["Year","South_Dakota_Counties"],"memberSet2":[]},{"effectType":"main","effectName":"Year","memberSet1":["Year"],"memberSet2":[]}]}]},"outputDS":"Nwayanova_stats","maxpointsCombo":"maxpointsDefault","specifyAlpha":"Specify value","statsGroup":"STATISTICS","alphaValue":"","alpha":"alpha_05","interactionPlot":"1","sasOS":"Linux LIN X64 2.6.32-573.26.1.el6.x86_64","plotsChoice":"defaultPlots","dataGroup":"DATA","allEffects":"All effects","modelTab":"MODEL","panelChoice":"Panel of plots","covratio":"","maxpointsDefault":"Default(5,000)","unpackCombo":"panelChoice","predicted":"1","anomPlot":"1","modelGroup":"MODEL EFFECTS","ss1":"0","customPlots":"Selected plots","h":"","createOutput":"0","ss3":"1","diagPlot":"","dataset":{"librarytable":"WORK.ELECTION_RESULTS"},"lsmeansPlot":"1","cookd":""}
+]]>
+</TemplateValues>
+</Task>
